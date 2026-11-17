@@ -1,0 +1,12 @@
+{
+  "name": "theming-oracle",
+  "private": true,
+  "description": "Runs upstream @cloudscape-design/theming-runtime to produce test fixtures for the Dart theming port. Dev-only; CI uses the committed fixtures.",
+  "type": "module",
+  "scripts": {
+    "fixtures": "node --import ./register.mjs oracle.mjs"
+  },
+  "dependencies": {
+    "@cloudscape-design/theming-runtime": "1.0.139"
+  }
+}

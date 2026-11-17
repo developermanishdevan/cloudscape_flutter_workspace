@@ -1,0 +1,114 @@
+name: cloudscape_flutter_workspace
+publish_to: none
+
+environment:
+  sdk: ^3.14.0
+
+workspace:
+  - packages/cloudscape_tokens
+  - packages/cloudscape_flutter
+  - packages/cloudscape_collection
+  - packages/cloudscape_charts
+  - packages/cloudscape_board
+  - packages/cloudscape_chat
+  - packages/cloudscape_code_view
+  - packages/cloudscape_flutter_test
+  - apps/catalog
+  - apps/demos
+  - tool/token_gen
+  - tool/icon_gen
+  - tool/i18n_gen
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  melos: ^8.10.1
+
+melos:
+  name: cloudscape_flutter
+  sdkPath: .fvm/flutter_sdk
+
+  scripts:
+    check:imports:
+      description: Fail if any package imports Material or Cupertino.
+      run: dart run tool/check_no_material.dart
+
+    analyze:
+      description: Static analysis for every package (warnings are fatal).
+      run: dart analyze --fatal-infos .
+
+    format:
+      description: Format every Dart file.
+      run: dart format .
+
+    format:check:
+      description: Fail if any Dart file is not formatted.
+      run: dart format --output=none --set-exit-if-changed .
+
+    test:
+      description: Run all Dart and Flutter tests.
+      steps:
+        - test:dart
+        - test:flutter
+
+    test:dart:
+      description: Run tests in pure Dart packages with a test/ folder.
+      exec:
+        command: dart test
+        concurrency: 1
+      packageFilters:
+        dirExists: test
+        flutter: false
+
+    test:flutter:
+      description: Run tests in Flutter packages with a test/ folder.
+      exec:
+        command: flutter test
+        concurrency: 1
+      packageFilters:
+        dirExists: test
+        flutter: true
+
+    tokens:fetch:
+      description: >-
+        Re-vendor upstream token inputs. Edit the versions here to bump the
+        pinned upstream release, then run tokens:generate.
+      run: dart run token_gen:fetch --components 3.0.1416 --design-tokens 3.0.118 --cldr 47.0.0
+
+    tokens:generate:
+      description: Regenerate cloudscape_tokens from the vendored upstream preset.
+      run: dart run token_gen:generate
+
+    icons:generate:
+      description: Regenerate cloudscape_flutter icon data from the vendored upstream icons.
+      run: dart run icon_gen:generate
+
+    icons:check:
+      description: Fail if generated icons differ from the vendored upstream icons.
+      run: dart run icon_gen:generate --check
+
+    i18n:generate:
+      description: Regenerate cloudscape_flutter i18n messages (Dart + ARB) from the vendored upstream bundles.
+      run: dart run i18n_gen:generate
+
+    i18n:check:
+      description: Fail if generated i18n messages differ from the vendored upstream bundles.
+      run: dart run i18n_gen:generate --check
+
+    preview:
+      description: Open the Flutter widget previewer for cloudscape_flutter (every @CsPreview in light, dark, compact and RTL).
+      run: cd packages/cloudscape_flutter && flutter widget-preview start
+
+    tokens:check:
+      description: Fail if generated tokens differ from the vendored upstream preset.
+      run: dart run token_gen:generate --check
+
+    verify:
+      description: Everything CI runs on a pull request.
+      steps:
+        - check:imports
+        - tokens:check
+        - icons:check
+        - i18n:check
+        - format:check
+        - analyze
+        - test

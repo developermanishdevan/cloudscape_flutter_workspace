@@ -1,0 +1,106 @@
+{
+  "components": {
+    "package": "@cloudscape-design/components",
+    "version": "3.0.1416",
+    "tarball": "https://registry.npmjs.org/@cloudscape-design/components/-/components-3.0.1416.tgz",
+    "integrity": "sha512-lYFuPBUkrxx7VIACWx6gFrxgK+Cdb+TB8ESUh5pXVMgGlifyhAI82mPmIKaT9ZMG/TeF/rx8d9EDTxdqMhPgaw=="
+  },
+  "designTokens": {
+    "package": "@cloudscape-design/design-tokens",
+    "version": "3.0.118",
+    "tarball": "https://registry.npmjs.org/@cloudscape-design/design-tokens/-/design-tokens-3.0.118.tgz",
+    "integrity": "sha512-KdtrhuuG1w8fvOF9TImOwtYWIKAjWw8Ctfb619yZBkVbknq7Hzko9IOrfyROPX7Zin4BRHe5Z+tTqe9OEKVqnA=="
+  },
+  "cldr": {
+    "version": "47.0.0",
+    "license": "Unicode-3.0",
+    "packages": {
+      "cldr-core": {
+        "tarball": "https://registry.npmjs.org/cldr-core/-/cldr-core-47.0.0.tgz",
+        "integrity": "sha512-tdYRy66DMgpjEwVOWCTN0zhNr+zh1+d4A6MCNgJKU7voFDGsrwcWHor6jcqudHDmElCgyVNqWBKAB1JeNdSOKg=="
+      },
+      "cldr-dates-full": {
+        "tarball": "https://registry.npmjs.org/cldr-dates-full/-/cldr-dates-full-47.0.0.tgz",
+        "integrity": "sha512-XE/8oFMY1qnBF+FIvxGL+oSVnijb+Sw7BUVZoKaGTHqD5TRFi8AnO4bngOSzp1jmUamR+XDeLjodBia4mdNrsQ=="
+      },
+      "cldr-cal-buddhist-full": {
+        "tarball": "https://registry.npmjs.org/cldr-cal-buddhist-full/-/cldr-cal-buddhist-full-47.0.0.tgz",
+        "integrity": "sha512-eMM3IRs4m0RoYq5SqMIl2T/ZPiNOQtiYX92AzUZwHI3RmfBMTZZUGLpi9+C81EtDXxdkDMMZQM/YuypghcDXAQ=="
+      },
+      "cldr-cal-persian-full": {
+        "tarball": "https://registry.npmjs.org/cldr-cal-persian-full/-/cldr-cal-persian-full-47.0.0.tgz",
+        "integrity": "sha512-UpkqoV0AVCENN0GkWTkLbORlSab8+dNeIZaDK3J9ksv612PfNCkRgDuZixjXCazMjlVd485UrjT4nZz2yfahJw=="
+      },
+      "cldr-numbers-full": {
+        "tarball": "https://registry.npmjs.org/cldr-numbers-full/-/cldr-numbers-full-47.0.0.tgz",
+        "integrity": "sha512-5OXUfjiAdXYuVD4XlaQe++WKBVmI1bkKxO0uWJMpbokzgcJ30vhFzcX5WsnZMtoZuhEpOt5KubCJaxaHPj5XTQ=="
+      }
+    },
+    "dateLocales": {
+      "ar": "ar",
+      "de": "de",
+      "en-GB": "en-GB",
+      "en": "en",
+      "es": "es",
+      "fr": "fr",
+      "id": "id",
+      "it": "it",
+      "ja": "ja",
+      "ko": "ko",
+      "pt-BR": "pt",
+      "th": "th",
+      "tr": "tr",
+      "zh-CN": "zh",
+      "zh-TW": "zh-Hant"
+    },
+    "files": {
+      "package/supplemental/plurals.json": "tool/upstream/cldr/plurals.json",
+      "package/supplemental/ordinals.json": "tool/upstream/cldr/ordinals.json",
+      "package/supplemental/likelySubtags.json": "tool/upstream/cldr/supplemental/likelySubtags.json",
+      "package/supplemental/calendarPreferenceData.json": "tool/upstream/cldr/supplemental/calendarPreferenceData.json",
+      "package/supplemental/numberingSystems.json": "tool/upstream/cldr/supplemental/numberingSystems.json",
+      "cldr-dates-full/package/main/* (locale ids)": "tool/upstream/cldr/dates/available.json",
+      "cldr-dates-full + cldr-cal-{buddhist,persian}-full (main/*/{ca-*,timeZoneNames}.json, compacted)": "tool/upstream/cldr/dates/<id>.json",
+      "cldr-numbers-full/package/main/*/numbers.json (minimumGroupingDigits, defaultNumberingSystem, symbols, decimal/percent patterns)": "tool/upstream/cldr/numbers-summary.json"
+    }
+  },
+  "locales": [
+    "ar",
+    "de",
+    "en",
+    "en-GB",
+    "es",
+    "fr",
+    "id",
+    "it",
+    "ja",
+    "ko",
+    "pt-BR",
+    "th",
+    "tr",
+    "zh-CN",
+    "zh-TW"
+  ],
+  "files": {
+    "package/internal/generated/theming/index.js": "tool/upstream/visual-refresh.preset.json",
+    "package/index-visual-refresh.json": "tool/upstream/design-tokens.visual-refresh.json",
+    "package/icon/generated/icons.js": "tool/upstream/icons/icons.js",
+    "package/icon/styles.scoped.css": "tool/upstream/icons/styles.scoped.css",
+    "package/icon/internal.js": "tool/upstream/icons/internal.js",
+    "package/i18n/messages/all.ar.json": "tool/upstream/i18n/ar.json",
+    "package/i18n/messages/all.de.json": "tool/upstream/i18n/de.json",
+    "package/i18n/messages/all.en-GB.json": "tool/upstream/i18n/en-GB.json",
+    "package/i18n/messages/all.en.json": "tool/upstream/i18n/en.json",
+    "package/i18n/messages/all.es.json": "tool/upstream/i18n/es.json",
+    "package/i18n/messages/all.fr.json": "tool/upstream/i18n/fr.json",
+    "package/i18n/messages/all.id.json": "tool/upstream/i18n/id.json",
+    "package/i18n/messages/all.it.json": "tool/upstream/i18n/it.json",
+    "package/i18n/messages/all.ja.json": "tool/upstream/i18n/ja.json",
+    "package/i18n/messages/all.ko.json": "tool/upstream/i18n/ko.json",
+    "package/i18n/messages/all.pt-BR.json": "tool/upstream/i18n/pt-BR.json",
+    "package/i18n/messages/all.th.json": "tool/upstream/i18n/th.json",
+    "package/i18n/messages/all.tr.json": "tool/upstream/i18n/tr.json",
+    "package/i18n/messages/all.zh-CN.json": "tool/upstream/i18n/zh-CN.json",
+    "package/i18n/messages/all.zh-TW.json": "tool/upstream/i18n/zh-TW.json"
+  }
+}

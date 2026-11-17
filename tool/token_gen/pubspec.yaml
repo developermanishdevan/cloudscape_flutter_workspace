@@ -1,0 +1,15 @@
+name: token_gen
+description: "Generates cloudscape_tokens Dart code from the Cloudscape theming preset (style-dictionary output)."
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.14.0
+
+dependencies:
+  archive: ^4.7.1
+  cloudscape_tokens: ^0.0.1
+  crypto: ^3.0.8
+
+dev_dependencies:
+  test: ^1.25.6

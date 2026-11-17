@@ -1,0 +1,14 @@
+name: cloudscape_tokens
+description: "Cloudscape design tokens (visual refresh; light/dark; comfortable/compact; motion) as pure Dart, generated from style-dictionary output."
+version: 0.0.1
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.14.0
+
+dependencies:
+  material_color_utilities: ^0.13.0
+
+dev_dependencies:
+  test: ^1.25.6

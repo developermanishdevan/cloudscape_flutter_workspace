@@ -1,0 +1,10 @@
+name: icon_gen
+description: "Generates cloudscape_flutter icon data from the upstream Cloudscape icon set."
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.14.0
+
+dev_dependencies:
+  test: ^1.25.6

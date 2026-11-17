@@ -1,0 +1,16 @@
+name: cloudscape_flutter_test
+description: "Test utilities for Cloudscape Flutter widgets: finders and component drivers for WidgetTester."
+version: 0.0.1
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.14.0
+  flutter: ">=3.50.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_test:
+    sdk: flutter
+  cloudscape_flutter: ^0.0.1

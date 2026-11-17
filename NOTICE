@@ -1,0 +1,35 @@
+Cloudscape for Flutter
+Copyright 2026 The Cloudscape for Flutter authors.
+
+This product is a Flutter port of the Cloudscape Design System
+(https://cloudscape.design, https://github.com/cloudscape-design),
+Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+Cloudscape is licensed under the Apache License, Version 2.0.
+
+Portions of the "demos" repository are licensed under MIT No Attribution
+(MIT-0).
+
+This project is not affiliated with or endorsed by Amazon Web Services.
+"AWS" and "Amazon" are trademarks of Amazon.com, Inc. or its affiliates.
+
+Fonts: packages/cloudscape_flutter/assets/fonts/open_sans/ contains the
+Open Sans faces bundled by @cloudscape-design/global-styles 1.0.72, decoded
+from WOFF2 to TTF. Upstream labels them "Open Sans Fonts | Apache License,
+Version 2.0".
+
+Theming: packages/cloudscape_tokens/lib/src/{theming,palette}.dart port the
+logic of @cloudscape-design/theming-runtime 1.0.139 (Apache-2.0).
+
+i18n: packages/cloudscape_flutter/lib/i18n/messages/ and
+packages/cloudscape_flutter/l10n/ are generated from the message bundles of
+@cloudscape-design/components (Apache-2.0); lib/src/i18n/ ports the
+I18nProvider / I18nFormatter logic.
+
+CLDR: tool/upstream/cldr/ (and the generated
+packages/cloudscape_flutter/lib/src/i18n/generated/plural_rules.g.dart)
+contain plural rule data from cldr-core 47.0.0, Copyright © 1991-2025
+Unicode, Inc., licensed under the Unicode License v3 (Unicode-3.0).
+Also from CLDR 47.0.0 (Unicode-3.0): tool/upstream/cldr/dates/ (cldr-dates-full,
+cldr-cal-buddhist-full), tool/upstream/cldr/numbers-summary.json (derived from
+cldr-numbers-full) and tool/upstream/cldr/supplemental/, plus the generated
+packages/cloudscape_flutter/lib/src/i18n/generated/cldr_data.g.dart.

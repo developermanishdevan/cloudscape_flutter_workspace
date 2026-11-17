@@ -1,0 +1,45 @@
+name: cloudscape_flutter
+description: "Cloudscape Design System for Flutter: theme, primitives and core components, built on widgets.dart only."
+version: 0.0.1
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.14.0
+  flutter: ">=3.50.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cloudscape_tokens: ^0.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  fonts:
+    # Open Sans as bundled by upstream @cloudscape-design/global-styles 1.0.72
+    # (decoded from its woff2 data URIs; Latin subset).
+    - family: Open Sans
+      fonts:
+        - asset: assets/fonts/open_sans/OpenSans-Light.ttf
+          weight: 300
+        - asset: assets/fonts/open_sans/OpenSans-LightItalic.ttf
+          weight: 300
+          style: italic
+        - asset: assets/fonts/open_sans/OpenSans-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/open_sans/OpenSans-RegularItalic.ttf
+          weight: 400
+          style: italic
+        - asset: assets/fonts/open_sans/OpenSans-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/open_sans/OpenSans-BoldItalic.ttf
+          weight: 700
+          style: italic
+        - asset: assets/fonts/open_sans/OpenSans-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/open_sans/OpenSans-ExtraBoldItalic.ttf
+          weight: 800
+          style: italic

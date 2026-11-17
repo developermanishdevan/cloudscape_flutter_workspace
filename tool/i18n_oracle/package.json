@@ -1,0 +1,12 @@
+{
+  "name": "i18n-oracle",
+  "private": true,
+  "description": "Formats messages with upstream's intl-messageformat to produce fixtures for the Dart i18n port. Dev-only; CI uses the committed fixture.",
+  "type": "module",
+  "scripts": {
+    "fixtures": "TZ=UTC node oracle.mjs"
+  },
+  "dependencies": {
+    "intl-messageformat": "10.7.18"
+  }
+}
