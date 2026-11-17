@@ -1,0 +1,13 @@
+name: catalog_gen
+description: "Generates the catalog app's component data (API tables from dartdoc, preview sizes) from the cloudscape_flutter sources."
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.14.0
+
+dependencies:
+  analyzer: ^14.7.0
+
+dev_dependencies:
+  test: ^1.25.6

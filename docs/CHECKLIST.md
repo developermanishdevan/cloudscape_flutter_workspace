@@ -32,8 +32,8 @@ Toolchain rule: Flutter **3.50.0** (Dart 3.14.0), pinned in `.fvmrc`.
 | 5 | Full-locale CLDR dates: date/time data for all ~740 CLDR locales as deferred libraries, native digits, Persian and Islamic Umm al-Qura calendars, oracle extended to all locales (decided 2026-11-17: after step 4). Done: fetch vendors compact date data for all 739 CLDR locales (726 Gregorian, 11 Persian, 2 Buddhist) + `numberingSystems.json` + per-locale number symbols/patterns; `i18n_gen` emits the 15 Cloudscape locales eagerly and the other 724 as 386 de-duplicated deferred libraries + `cldr_date_loader.g.dart`; `csLoadCldrDateData` / `CsI18nProvider.preload`, and `CsI18nProvider` loads a locale on demand and rebuilds (English for the first frame); Persian calendar = ICU's arithmetic 33-year algorithm; native digits in dates and numbers from each locale's default numbering system; new CLDR number formatter (symbols, Indian grouping, minimumGroupingDigits, percent, half-expand) replaces package:intl, which is removed (C/D oracle still 100% for the 15 locales). Umm al-Qura dropped: CLDR 47 calendarPreferenceData prefers Gregorian for SA, so no locale defaults to it (oracle E will confirm). Oracle section E added (every ICU-supported locale × number/date messages); `test/i18n_oracle_test.dart` E is skipped until `tool/i18n_oracle` is rerun (user). `test/cldr_full_locales_test.dart` (13 tests) | Done (oracle E pending user run) |
 | 6a | Phase 0 gate: golden matrix harness (every preview × light/dark × comfortable/compact × LTR/RTL, `matchesGoldenFile`, no Material) for all phase-0 components and primitives. Done: `test/golden_matrix_test.dart` renders every registered preview at its declared `@CsPreview` size with the real Open Sans faces in all 8 combinations → 256 goldens under `test/goldens/matrix/<group>/` (5.6 MB); tolerant comparator (0.2 % pixels), macOS-only (`@TestOn('mac-os')`) since goldens are macOS-rasterized; part of `verify`. Self-written instead of `alchemist` (keeps Material out of the test graph). Bugs the goldens exposed and fixed: bundled font unresolved when the package is the root app (tests/previews) → plain `Open Sans` added as first fallback; autofocus showed an Android caret handle → programmatic selection changes never show handles; option-list filter preview used a raw `EditableText` → now `CsEditableField` | Done |
 | 6a-note | `alchemist` vs own harness: decided own harness (2026-11-17) — same matrix, no Material dependency | Done |
-| 6b | Phase 0 gate: catalog app pages for the phase-0 components (live previews, variants, API notes, guideline links) | Next |
-| 7 | Phase 1 components (25), each with previews, driver, tests, goldens, catalog page | Not started |
+| 6b | Phase 0 gate: catalog app pages for the phase-0 components (live previews, variants, API notes, guideline links). Done: `apps/catalog` shell built from Cloudscape primitives only (no Widgetbook, since it pulls in Material): top bar in the `top-navigation` visual context with global Light/Dark, Comfortable/Compact and LTR/RTL toggles (segment tokens, arrow keys via `CsNavigableGroup`); category navigation that collapses behind a menu button below 760 px; overview page; one page per preview group (12: 7 phase-0 components, the Table root spike, 4 internal primitives) showing every `csPreviewRegistry` scenario live at its declared `@CsPreview` size (same 16 px inset as `CsPreviewFrame`), the API reference, and the `https://cloudscape.design/components/<slug>/` guideline link (all 8 slugs checked live; opened with `url_launcher`, no Material). New `tool/catalog_gen`: `analyzer` 14.7.0 parses the sources and emits `apps/catalog/lib/src/generated/catalog_data.g.dart` — classes (doc, superclass), public constructors / properties / getters / methods with parameter tables (type taken from the field for `this.x`, default, required, field doc), referenced enums with value docs, preview sizes; fails if a preview group has no manifest entry or a class is missing; `catalog:generate` / `catalog:check` (`catalog:check` added to `verify`). Tests: `tool/catalog_gen/test/catalog_gen_test.dart` (9: extraction rules, previews, workspace pages, generated file up to date); `apps/catalog/test/app_test.dart` (104: registry completeness, guideline URLs, every page × light/dark × comfortable/compact × LTR/RTL with the real Open Sans loaded, navigation, toggles, guideline link, narrow layout). Decisions (2026-11-17): the direction toggle applies to the live previews only — the shell and API docs stay LTR, since flipping English docs and Dart signatures garbled their punctuation; Ahem-free smoke test (real fonts) because previews declare sizes that fit Open Sans (with the test font the Selectable item states preview overflowed by 16 px). Bugs found and fixed: `CsIcon` takes its color from `DefaultTextStyle`, so the menu icon was invisible on the dark top bar and the external-link icon used body color → both now get their context's text/link color. Noted, not changed: the Dropdown "Widths" preview opens all four dropdowns at once and they overlap the "max: 120px" trigger (same in its golden) | Done |
+| 7 | Phase 1 components (25), each with previews, driver, tests, goldens, catalog page | Next |
 
 **3a upstream verification (2026-11-16):** the user ran `tool/theming_oracle` (needed `register.mjs` for upstream's extensionless ESM imports). 35/37 matched at first; the 2 failures exposed an upstream quirk (reference-token names come from the palette input's keys, so seed-generated steps lose `defaultMode` pinning), now ported — **37/37 pass**, including all 126 palettes string-for-string. A 5th scenario (`paletteModes`: explicit mode-specific steps in `defaultMode` contexts) was added and rerun — **46/46 pass**. Fixture: `tool/token_gen/test/fixtures/theming.json` (keep in the repo so CI checks parity without Node).
 
@@ -50,7 +50,7 @@ Toolchain rule: Flutter **3.50.0** (Dart 3.14.0), pinned in `.fvmrc`.
 - [ ] **code-view** (P2) → `cloudscape_code_view` package
 - [ ] **chat-components** (P2) → `cloudscape_chat` package
 - [ ] **demos** (P1) → `example/` app reproducing every demo page
-- [ ] **documenter** (P3) → Use dartdoc + a generated API JSON for the docs site
+- [~] **documenter** (P3) → _`tool/catalog_gen` extracts the API from dartdoc into generated Dart data for the catalog (6b); a published docs site is pending_ → Use dartdoc + a generated API JSON for the docs site
 - [ ] **browser-test-tools** (P1) → `integration_test` + golden tooling (alchemist)
 - [ ] **jest-preset** (P3) → `flutter_test` config, shared `dart_test.yaml`
 - [~] **build-tools** (P3) → _melos scripts done (step 1–2); `build_runner` not needed yet_ → `melos` monorepo scripts + `build_runner`
@@ -85,13 +85,13 @@ Each component is done only when it has: full prop/event/slot parity, Semantics 
 
 ### Phase 0 (7)
 
-- [~] #12 Box — `CsBox` (Display) _— ported and tested (4b); test-utils driver done (4g); golden matrix done (6a); catalog page pending_
-- [~] #42 Dropdown — `CsDropdown` (Overlays) _— ported and tested (4c); test-utils driver done (4g); golden matrix done (6a); catalog page pending_
-- [~] #60 Icon — `CsIcon` (Display) _— widget, all props, tests, golden done; test-utils driver done (4g); golden matrix done (6a); catalog page pending_
-- [~] #61 Icon provider — `CsIconProvider` (Utility) _— widget, merge rules, componentIcons, tests done; test-utils driver done (4g); catalog page pending_
-- [~] #67 Live region — `CsLiveRegion` (Utility) _— behavior ported and tested (4a); test-utils driver done (4g); catalog page pending_
-- [~] #70 Navigable group — `CsNavigableGroup` (Utility) _— behavior ported and tested (4a); test-utils driver done (4g); catalog page pending_
-- [~] #84 Space between — `CsSpaceBetween` (Layout) _— ported and tested (4b); test-utils driver done (4g); golden matrix done (6a); catalog page pending_
+- [x] #12 Box — `CsBox` (Display) _— ported and tested (4b); test-utils driver (4g); golden matrix (6a); catalog page (6b)_
+- [x] #42 Dropdown — `CsDropdown` (Overlays) _— ported and tested (4c); test-utils driver (4g); golden matrix (6a); catalog page (6b)_
+- [x] #60 Icon — `CsIcon` (Display) _— widget, all props, tests, golden; test-utils driver (4g); golden matrix (6a); catalog page (6b)_
+- [x] #61 Icon provider — `CsIconProvider` (Utility) _— widget, merge rules, componentIcons, tests; test-utils driver (4g); golden matrix (6a); catalog page (6b)_
+- [x] #67 Live region — `CsLiveRegion` (Utility) _— behavior ported and tested (4a); test-utils driver (4g); golden matrix (6a); catalog page (6b)_
+- [x] #70 Navigable group — `CsNavigableGroup` (Utility) _— behavior ported and tested (4a); test-utils driver (4g); golden matrix (6a); catalog page (6b)_
+- [x] #84 Space between — `CsSpaceBetween` (Layout) _— ported and tested (4b); test-utils driver (4g); golden matrix (6a); catalog page (6b)_
 
 ### Phase 1 (25)
 
@@ -355,11 +355,12 @@ Test infrastructure:
 
 Docs, repo and CI:
 
-- [ ] Catalog app (Widgetbook): live playground, variants, dartdoc API table, link to Cloudscape guideline
+- [~] Catalog app (Widgetbook): live playground, variants, dartdoc API table, link to Cloudscape guideline _— own shell instead of Widgetbook (no Material), 6b: live previews with global mode/density/direction, generated API tables, guideline links; every new component adds a manifest entry. Interactive prop playground (knobs) pending_
 - [x] `melos` monorepo with the package/app layout from the plan
 - [x] `tool/token_gen` — style-dictionary JSON → Dart
 - [x] `tool/icon_gen` — SVG icons → icon font + enum _(vector data + enum instead of a font; `icons:check` in CI)_
 - [x] `tool/i18n_gen` — message bundles → ARB _(+ Dart libraries; `i18n:check` in CI)_
+- [x] `tool/catalog_gen` — dartdoc → catalog API tables + preview sizes _(6b; `catalog:check` in `verify`)_
 - [ ] `tool/parity_check` — compares component/prop lists with the React repo
 - [ ] CI: `dart analyze`, all tests, golden diffs, parity check on every PR
 - [ ] Publish to pub.dev with semantic versioning from a changelog
@@ -379,7 +380,7 @@ Docs, repo and CI:
 - [ ] All 33 demo pages reproduced and screenshot-diffed against the React versions
 - [ ] Golden tests for every component state × mode × density × direction
 - [~] Public test utilities for every component _— drivers for every component built so far (4g)_
-- [ ] Catalog site live with API docs for every widget
+- [~] Catalog site live with API docs for every widget _— catalog app with generated API docs for every widget built so far (6b); hosting the web build is pending_
 - [x] Apache 2.0 LICENSE and NOTICE included, crediting Cloudscape
 
 ## 8. Risk mitigations

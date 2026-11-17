@@ -18,6 +18,7 @@ workspace:
   - tool/token_gen
   - tool/icon_gen
   - tool/i18n_gen
+  - tool/catalog_gen
 
 dev_dependencies:
   flutter_lints: ^6.0.0
@@ -98,6 +99,14 @@ melos:
       description: Open the Flutter widget previewer for cloudscape_flutter (every @CsPreview in light, dark, compact and RTL).
       run: cd packages/cloudscape_flutter && flutter widget-preview start
 
+    catalog:generate:
+      description: Regenerate the catalog app's component data (API tables from dartdoc, preview sizes).
+      run: dart run catalog_gen:generate
+
+    catalog:check:
+      description: Fail if the generated catalog data differs from the cloudscape_flutter sources.
+      run: dart run catalog_gen:generate --check
+
     tokens:check:
       description: Fail if generated tokens differ from the vendored upstream preset.
       run: dart run token_gen:generate --check
@@ -109,6 +118,7 @@ melos:
         - tokens:check
         - icons:check
         - i18n:check
+        - catalog:check
         - format:check
         - analyze
         - test

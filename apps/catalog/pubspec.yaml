@@ -12,6 +12,8 @@ dependencies:
   flutter:
     sdk: flutter
   cloudscape_flutter: ^0.0.1
+  # Opens the Cloudscape guideline pages (no Material dependency).
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:

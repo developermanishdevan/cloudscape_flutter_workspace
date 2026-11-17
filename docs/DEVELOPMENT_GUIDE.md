@@ -41,7 +41,7 @@ dart run melos run verify             # everything CI runs
 
 | Script | What it does |
 | --- | --- |
-| `verify` | `check:imports` → `tokens:check` → `icons:check` → `i18n:check` → `format:check` → `analyze` → `test`. Must be green before a step counts as done. |
+| `verify` | `check:imports` → `tokens:check` → `icons:check` → `i18n:check` → `catalog:check` → `format:check` → `analyze` → `test`. Must be green before a step counts as done. |
 | `check:imports` | Fails on any Material or Cupertino import. |
 | `analyze` | `dart analyze --fatal-infos`. Infos are errors too. |
 | `format` / `format:check` | Dart format. |
@@ -50,6 +50,7 @@ dart run melos run verify             # everything CI runs
 | `tokens:generate` / `tokens:check` | Design tokens → `cloudscape_tokens`. |
 | `icons:generate` / `icons:check` | Upstream icons → vector data + `CsIconName`. |
 | `i18n:generate` / `i18n:check` | Message bundles, plural rules and CLDR date/number data. |
+| `catalog:generate` / `catalog:check` | Catalog data (API tables from dartdoc, preview sizes) → `apps/catalog/lib/src/generated/`. |
 | `preview` | Starts the Flutter widget previewer for `cloudscape_flutter`. |
 
 Run a single test file with:
@@ -66,6 +67,7 @@ cd packages/cloudscape_flutter
 ```
 apps/
   catalog/                 component catalog (Cloudscape-built shell; step 6b)
+                           run: cd apps/catalog && flutter run -d chrome (or macos)
   demos/                   the 33 demo pages (acceptance tests per phase)
 packages/
   cloudscape_tokens/       generated tokens, theme resolver (pure Dart)
@@ -88,6 +90,7 @@ tool/
   upstream/                vendored upstream inputs (+ upstream.json lock, README)
   token_gen/               fetch (all vendoring) + token generator
   icon_gen/  i18n_gen/     generators
+  catalog_gen/             dartdoc → catalog data; lib/src/manifest.dart lists every catalog page
   theming_oracle/  i18n_oracle/   Node oracles (run by a person; produce test fixtures)
   check_no_material.dart
 docs/
@@ -190,7 +193,10 @@ A component is done only when it has **all** of the following (from the plan, §
    - A `Cs<Name>Driver extends CsDriver<Cs<Name>>` mirroring upstream's `test-utils` wrapper (`findX()` → getters, actions → async methods).
    - A test in `test/drivers_test.dart` that exercises it on a real widget.
 6. **Goldens:** run `flutter test test/golden_matrix_test.dart --update-goldens` (macOS) and **look at the PNGs** before accepting them. Each preview gets 8 images under `test/goldens/matrix/<group>/`.
-7. **Catalog page** in `apps/catalog` (from step 6b on).
+7. **Catalog page** in `apps/catalog` (from step 6b on):
+   - Add a `ManifestEntry` to `tool/catalog_gen/lib/src/manifest.dart` (`name` = the preview group, category and phase from the plan, plan number, guideline `slug`, and the classes for the API table).
+   - Run `dart run melos run catalog:generate`. It fails if a preview group has no entry or a listed class is missing.
+   - The page, its previews and its API table appear automatically; `apps/catalog/test/app_test.dart` renders it in all 8 mode combinations. Public members without `///` docs show empty descriptions, so document them.
 8. **`melos run verify` green**, and **CHECKLIST.md updated** (see §9).
 
 ---
@@ -229,6 +235,7 @@ All generated files have a `--check` mode, which `verify` runs. **Never edit gen
 | `token_gen:fetch` | npm tarballs (sha512-verified) | everything under `tool/upstream/` + `upstream.json` |
 | `token_gen:generate` | `visual-refresh.preset.json` | `packages/cloudscape_tokens/lib/src/generated/` |
 | `icon_gen:generate` | `icons/` | `cloudscape_flutter/lib/src/icon/generated/` |
+| `catalog_gen:generate` | `tool/catalog_gen/lib/src/manifest.dart` + `packages/cloudscape_flutter/lib/src/**` (dartdoc, `@CsPreview`) | `apps/catalog/lib/src/generated/catalog_data.g.dart` |
 | `i18n_gen:generate` | `i18n/*.json`, `cldr/**` | message libraries, ARB files, plural rules, `cldr_data.g.dart` (15 eager locales + number data for every locale), `cldr_date_loader.g.dart` + `generated/dates/*.g.dart` (386 deferred libraries for the other 724 locales) |
 
 **To bump upstream:**
@@ -243,13 +250,13 @@ All generated files have a `--check` mode, which `verify` runs. **Never edit gen
 
 ## 8. Roadmap: what's left, in order
 
-Phase 0 must close before anything else. After that, phases 1–3 can run in parallel; phase 4 needs phase 3's overlays; phase 5 needs phases 2 and 3; phase 6 packages are independent.
+Phase 0's gate is closed (6a goldens, 6b catalog); the leftovers below can be built when phase 3 needs them. After that, phases 1–3 can run in parallel; phase 4 needs phase 3's overlays; phase 5 needs phases 2 and 3; phase 6 packages are independent.
 
 ### Phase 0: finish the gate
 
 | Step | Work |
 | --- | --- |
-| **6b** (next) | **Catalog app.** Build the shell with our own widgets (no Widgetbook, since it uses Material). It needs:<ul><li>a component list grouped by category;</li><li>one page per component showing its `csPreviewRegistry` scenarios live, with global mode, density and direction toggles;</li><li>an API table generated from dartdoc by a new `tool/catalog_gen` (`analyzer` 14.7.0 is already in the lockfile; add a `catalog:check` script to `verify`);</li><li>a link to `https://cloudscape.design/components/<slug>/`;</li><li>a smoke test that renders every page.</li></ul>Then tick the phase-0 rows. |
+| ~~6b~~ | **Catalog app — done (2026-11-17).** Shell from our own widgets, category navigation, a page per preview group with live previews and global mode/density/direction toggles (direction applies to previews only), API tables generated by `tool/catalog_gen`, guideline links, smoke test over every page. See the 6b row in CHECKLIST.md. |
 | Phase 0 leftovers | **Focus lock** (modals, drawers), **screen-reader-only text** helper (hidden internals). Build them when phase 3 needs them, or here. |
 | Oracle | A person reruns `tool/i18n_oracle` to activate section E (all-locale dates and numbers). Fix any mismatches it reports. |
 
@@ -336,7 +343,7 @@ After **every** step, before saying it is done:
 [ ] cs_<name>_preview.dart (+ preview_registry.dart entries)
 [ ] find.cs<Name>() + Cs<Name>Driver + drivers_test.dart case
 [ ] --update-goldens, then LOOK at the PNGs (light/dark/compact/RTL)
-[ ] Catalog page
+[ ] Catalog page: manifest entry + catalog:generate
 [ ] dart run melos run verify  → green
 [ ] CHECKLIST.md: build-steps row + component row + next step
 ```
